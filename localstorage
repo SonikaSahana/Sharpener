@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+     body {
+    width: 500px;
+    margin: 0 auto;
+    padding: 50px;
+    text-align: center;
+    border:#777;
+  }
+  
+    div.elem-group {
+      margin: 2px 0;
+    }
+  
+  div.elem-group.inlined {
+    width: 49%;
+    display: inline-block;
+    float: left;
+    margin-left: 1%;
+  }
+  
+  label {
+    display: block;
+    font-family: 'Nanum Gothic';
+    padding-bottom: 2px;
+    font-size: 1.25em;
+  }
+  
+  input, select, textarea {
+    border-radius: 5px;
+    border: 2px solid #777;
+    box-sizing: border-box;
+    font-size: 1.5em;
+    font-family: 'Nanum Gothic';
+    width: 100%;
+    padding: 10px;
+    height: 30px;
+  }
+  
+  div.elem-group.inlined input {
+    width: 95%;
+    display: inline-block;
+    font-size: 1em;
+    box-sizing: border-box;
+  }
+  
+  textarea {
+    height: 250px;
+  }
+  
+  hr {
+    border: 2px line #ccc;
+  }
+  
+  button {
+    height: 50px;
+    background: orange;
+    border: none;
+    color: white;
+    font-size: 1.25em;
+    font-family: 'Nanum Gothic';
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  button:hover {
+    border: 2px solid black;
+  }
+
+  h1 {
+    text-align: center;
+  }
+  body {
+    background-image: url('images.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+  }
+  
+</style>
+</head>
+<body>
+    <h1 style="color:blue;">Book a Call</h1> 
+    <p style="color:Red;">Book a call and our representative will call within one our of selected time.</p>
+<hr></hr>
+    <div class="elem-group">
+    <label style="color:blue "for="name">Name:</label>
+    <br>
+    <input type="text" name="username" id="username" required>
+    </br>
+    </div>
+    <div class="elem-group">
+    <label label style="color:blue " for="phone">Phone:</label>
+    <br>
+    <input type="number" id="phone">
+</br>
+</div>
+<div>
+    <label style="color:blue "for="email">Email:</label>
+<br>
+    <input type="email" id="Email">
+</br>
+</div>
+<div  class="elem-group inlined">  
+    <label style="color:blue " for="time for call">Time for call:</label>
+
+    <input type="Date" id="time for call">
+</div>
+<div  class="elem-group inlined">  
+    <label style="color:blue "for="time" > Time: </label>
+
+    <input type="time" id="time">
+</div>  
+
+<button style="color:blue "type="submit"  onclick = "test()">Book The Call</button>
+
+<script>
+
+function date() {
+  var currentDateTime = new Date();
+  var year = currentDateTime.getFullYear();
+  var month = (currentDateTime.getMonth() + 1);
+  var date = (currentDateTime.getDate() + 1);
+  
+  if(date < 10) {
+    date = '0' + date;
+  }
+  if(month < 10) {
+    month = '0' + month;
+  }
+  
+  var dateTomorrow = year + "-" + month + "-" + date;
+  var checkinElem = document.querySelector("#time for call");
+  
+  checkinElem.setAttribute("min", dateTomorrow);
+  
+  checkinElem.onchange = function () {
+      checkoutElem.setAttribute("min", this.value);
+  }
+}
+  
+  function test() {
+    var uid=document.getElementById("username").value;
+  var ph=document.getElementById("phone").value;
+  var mail=document.getElementById("Email").value;
+   
+  var user=localStorage.setItem("uid",uid);
+  var pass=localStorage.setItem("ph",ph);
+  var em=localStorage.setItem("mail",mail);
+  
+  var user=localStorage.getItem("uid",uid);
+  var pass=localStorage.getItem("ph",ph);
+  var em=localStorage.getItem("mail",mail);
+  
+  var a,b,c;
+  a="sonikadeogharia";
+  b=12345;
+  c="s24@gmail.com";
+  
+  if(a==uid && b==ph && c==mail){
+    alert("login successful!");
+  }
+  else{
+    alert("invalid details!");
+  }
+  }
+  
+  </script>
+</body>
+</html>
