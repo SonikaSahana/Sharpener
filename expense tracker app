@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+     body {
+    width: 500px;
+    margin: 0 auto;
+    padding: 50px;
+    text-align: center;
+    border:#777;
+  }
+
+    div.elem-group {
+      margin: 2px 0;
+    }
+
+  div.elem-group.inlined {
+    width: 49%;
+    display: inline-block;
+    float: left;
+    margin-left: 1%;
+  }
+
+  label {
+    display: block;
+    font-family: 'Nanum Gothic';
+    padding-bottom: 2px;
+    font-size: 1.25em;
+  }
+
+  input, select, textarea {
+    border-radius: 5px;
+    border: 2px solid #777;
+    box-sizing: border-box;
+    font-size: 1.5em;
+    font-family: 'Nanum Gothic';
+    width: 100%;
+    padding: 10px;
+    height: 40px;
+  }
+
+  div.elem-group.inlined input {
+    width: 95%;
+    display: inline-block;
+    font-size: 1em;
+    box-sizing: border-box;
+  }
+
+  textarea {
+    height: 250px;
+  }
+
+
+  hr {
+    border: 2px line #ccc;
+  }
+
+  button {
+    height: 40px;
+    background: green;
+    border: none;
+    color: white;
+    font-size: 1.25em;
+    font-family: 'Nanum Gothic';
+    border-radius: 20px;
+    cursor: pointer;
+    width: 50%;
+  }
+
+  button:hover {
+    border: 2px solid black;
+  }
+
+  h1 {
+    text-align: center;
+  }
+  body {
+    background-image: url('360_F_80719252_vpsARcdNXBjLvYmnzsQq6WNWRXJ1tmAf.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+  }
+  select{
+    height: 40px;
+    font-size: 1em;
+  }
+
+</style>
+</head>
+<body>
+
+    <h1 style="color:blue;">Expense Tracker</h1> 
+    <p style="color:Red;">Track your expenses here.</p>
+<hr></hr>
+    <div class="elem-group">
+    <label style="color:blue "for="amount">choose expense amount:</label>
+    <br>
+    <input type="number" name="amount" id="amount" required>
+    </br>
+    </div>
+    <div class="elem-group">
+    <label style="color:blue " for="description" >Choose description:</label>
+    <br>
+    <select id="description">
+        <option value="movie">movie</option>
+        <option value="food">food</option>
+        <option value="vacation">vacation</option>
+        <option value="health">health</option>
+</select>
+</br>
+</div>
+<div>
+    <label style="color:blue "for="catagory">Choose a catagory:</label>
+<br>
+<select id="catagory">
+    <option value="movie">movie</option>
+    <option value="food">food</option>
+    <option value="vacation">vacation</option>
+    <option value="health">health</option>
+</select>
+</br>
+</div>
+
+<button style="color:blue "type="submit"  onclick = "test()">Add Expense</button>
+<ul id="listOfitems"></ul>
+  <li>
+
+  </li>
+
+
+<script>
+
+
+let objs=[];
+   function test() {
+
+  
+
+  let obj={
+        amount1:document.getElementById('amount').value,
+        description1:document.getElementById('description').value,
+        catagory1:document.getElementById('catagory').value
+
+    }
+    objs.push(obj);
+    localStorage.setItem('myObjs',JSON.stringify(objs))
+    document.getElementById('amount').value = ''
+      document.getElementById('description').value = ''
+      document.getElementById('catagory').value = ''
+    show(obj)
+    localStorage.removeItem("myObjs");
+  }
+
+  function show(obj){
+   
+      const emptyParentListItem = document.getElementById('listOfitems')
+    const newChildListItem = document.createElement('li')
+    newChildListItem.textContent = obj.amount1 + '-' + obj.description1 + '-' + obj.catagory1
+    const newChildButton = document.createElement('button')
+    newChildButton.textContent =  'delete'
+    newChildButton.style.color = 'black'
+    newChildButton.style.backgroundColor = 'red'
+    newChildButton.style.height='30px'
+    newChildButton.style.width='20%'
+
+    newChildButton.onclick = () =>{
+      localStorage.removeItem(obj.catagory1)
+      emptyParentListItem.removeChild(newChildListItem) 
+    }
+    // newChildButton.onclick(deleteData(obj))
+    const neweditButton = document.createElement('button')
+    neweditButton.textContent =  'edit'
+    neweditButton.style.color = 'blue'
+    neweditButton.style.backgroundColor='yellow'
+    neweditButton.style.height='30px'
+    neweditButton.style.width='20%'
+
+    neweditButton.onclick = () =>{  
+      document.getElementById('amount').value = obj.id
+      document.getElementById('description').value = obj.contact
+      document.getElementById('catagory').value = obj.mail
+      localStorage.removeItem(obj.catagory1)
+      emptyParentListItem.removeChild(newChildListItem) 
+    }
+    newChildListItem.appendChild(newChildButton)
+    newChildListItem.appendChild(neweditButton)
+   emptyParentListItem.appendChild(newChildListItem)
+  }
+
+  </script>
+</body>
+</html>
