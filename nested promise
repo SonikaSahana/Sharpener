@@ -1,0 +1,46 @@
+// Online Javascript Editor for free
+// Write, Edit and Run your Javascript code using JS Online Compiler
+
+
+//========== User's Code Starts Here ==========
+const posts = [{title: 'Post One'},{title: 'Post Two'}];
+
+//Do not touch this function below
+function printPost() {
+        posts.forEach((post) => {
+            console.log(post.title)
+        })
+}
+
+//Do not touch this function below
+function create3rdPost() {
+    return new Promise( (resolve, reject) => {
+        setTimeout( () => {
+            posts.push({title: 'post Three'});
+            resolve()
+        }, 3000)
+    }) 
+}
+
+//Do not touch this function below
+function create4thPost() {
+    return new Promise( (resolve, reject) => {
+        setTimeout( () => {
+            posts.push({title: 'post Four'});
+            resolve();
+        }, 2000)
+    }) 
+}
+
+// Correct the lines below smartly such that post three gets printed before post four
+
+create3rdPost().then(()=> {
+  create4thPost().then(()=>{
+      printPost()
+  })
+})
+// var promise1 = create3rdPost()
+// var promise2 = promise1.then(create4thPost)
+// promise2.then(printPost)
+// create4thPost();
+// printPost()
