@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+     body {
+      background-image: url('360_F_80719252_vpsARcdNXBjLvYmnzsQq6WNWRXJ1tmAf.jpg');
+    width: 500px;
+    margin: 0 auto;
+    padding: 50px;
+    text-align: center;
+    border:#777;
+  }
+  
+    div.elem-group {
+      margin: 2px 0;
+    }
+  
+  div.elem-group.inlined {
+    width: 49%;
+    display: inline-block;
+    float: left;
+    margin-left: 1%;
+  }
+  
+  label {
+    display: block;
+    font-family: 'Nanum Gothic';
+    padding-bottom: 2px;
+    font-size: 1.25em;
+  }
+  
+  input, select, textarea {
+    border-radius: 5px;
+    border: 2px solid #777;
+    box-sizing: border-box;
+    font-size: 1.5em;
+    font-family: 'Nanum Gothic';
+    width: 100%;
+    padding: 10px;
+    height: 30px;
+  }
+  
+  div.elem-group.inlined input {
+    width: 95%;
+    display: inline-block;
+    font-size: 1em;
+    box-sizing: border-box;
+  }
+  
+  textarea {
+    height: 250px;
+  }
+  
+  
+  hr {
+    border: 2px line #ccc;
+  }
+  
+  button {
+    height: 40px;
+    background: orange;
+    border: none;
+    color: white;
+    font-size: 1.25em;
+    font-family: 'Nanum Gothic';
+    border-radius: 20px;
+    cursor: pointer;
+    width: 50%;
+  }
+  
+  button:hover {
+    border: 2px solid black;
+  }
+
+  h1 {
+    text-align: center;
+  }
+  body {
+    background-image: url('images.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+  }
+  
+</style>
+</head>
+<body>
+    <h1 style="color:blue;">Book a Call</h1> 
+    <p style="color:Red;">Book a call and our representative will call within one our of selected time.</p>
+<hr></hr>
+    <div class="elem-group">
+    <label style="color:blue "for="name">Name:</label>
+    <br>
+    <input type="text" name="username" id="username" required>
+    </br>
+    </div>
+    <div class="elem-group">
+    <label label style="color:blue " for="phone">Phone:</label>
+    <br>
+    <input type="number" id="phone">
+</br>
+</div>
+<div>
+    <label style="color:blue "for="email">Email:</label>
+<br>
+    <input type="email" id="Email">
+</br>
+</div>
+<div  class="elem-group inlined">  
+    <label style="color:blue " for="time for call">Time for call:</label>
+
+    <input type="Date" id="time for call">
+</div>
+<div  class="elem-group inlined">  
+    <label style="color:blue "for="time" > Time: </label>
+
+    <input type="time" id="time">
+</div>  
+
+<button style="color:blue "type="submit"  onclick = "test()">Book The Call</button>
+<ul id="listOfitems"></ul>
+  <li>
+
+  </li>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script >
+
+function date() {
+  var currentDateTime = new Date();
+  var year = currentDateTime.getFullYear();
+  var month = (currentDateTime.getMonth() + 1);
+  var date = (currentDateTime.getDate() + 1);
+  
+  if(date < 10) {
+    date = '0' + date;
+  }
+  if(month < 10) {
+    month = '0' + month;
+  }
+  
+  var dateTomorrow = year + "-" + month + "-" + date;
+  var checkinElem = document.querySelector("#time for call");
+  
+  checkinElem.setAttribute("min", dateTomorrow);
+  
+  checkinElem.onchange = function () {
+      checkoutElem.setAttribute("min", this.value);
+  }
+}
+let objs=[];
+   function test() {
+    
+  let obj={
+        id:document.getElementById('username').value,
+        contact:document.getElementById('phone').value,
+        mail:document.getElementById('Email').value
+
+    }
+    axios.post("https://crudcrud.com/api/fc28784088494a37a9cf74e226d2f955/Appointmentdata",obj)
+    .then((response)=>{
+      show(response.data)
+      console.log(response)
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
+    objs.push(obj);
+    // localStorage.setItem('myObjs',JSON.stringify(objs))
+    document.getElementById('username').value = ''
+      document.getElementById('phone').value = ''
+      document.getElementById('Email').value = ''
+    show(obj)
+    //localStorage.removeItem("myObjs");
+  }
+
+   function show(obj){
+
+
+      const emptyParentListItem = document.getElementById('listOfitems')
+    const newChildListItem = document.createElement('li')
+    newChildListItem.textContent = obj.id + '-' + obj.contact + '-' + obj.mail
+    const newChildButton = document.createElement('button')
+    newChildButton.textContent =  'delete'
+    newChildButton.style.color = 'black'
+    newChildButton.style.backgroundColor = 'red'
+    newChildButton.style.height='30px'
+    newChildButton.style.width='20%'
+    newChildButton.onclick = () =>{
+      localStorage.removeItem(obj.mail)
+      emptyParentListItem.removeChild(newChildListItem) 
+    }
+    // newChildButton.onclick(deleteData(obj))
+    const neweditButton = document.createElement('button')
+    neweditButton.textContent =  'edit'
+    neweditButton.style.color = 'blue'
+    neweditButton.style.backgroundColor='yellow'
+    neweditButton.style.height='30px'
+    neweditButton.style.width='20%'
+
+    neweditButton.onclick = () =>{  
+      document.getElementById('username').value = obj.id
+      document.getElementById('phone').value = obj.contact
+      document.getElementById('Email').value = obj.mail
+      localStorage.removeItem(obj.mail)
+      emptyParentListItem.removeChild(newChildListItem) 
+    }
+    newChildListItem.appendChild(newChildButton)
+    newChildListItem.appendChild(neweditButton)
+   emptyParentListItem.appendChild(newChildListItem)
+   }
+   
+  </script>
+</body>
+</html>
