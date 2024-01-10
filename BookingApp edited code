@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+  p{
+    font-size: 1.5em;
+  }
+     body {
+    width: 500px;
+    margin: 0 auto;
+    padding: 50px;
+    text-align: center;
+    border:#777;
+  
+  }
+  
+    div.elem-group {
+      margin: 2px 0;
+    }
+  
+  div.elem-group.inlined {
+    width: 49%;
+    display: inline-block;
+    float: left;
+    margin-left: 1%;
+  }
+  
+  label {
+    display: block;
+    font-family: 'Nanum Gothic';
+    padding-bottom: 2px;
+    font-size: 1.25em;
+  }
+  
+  input, select, textarea {
+    border-radius: 5px;
+    border: 2px solid #777;
+    box-sizing: border-box;
+    font-size: 1.5em;
+    font-family: 'Nanum Gothic';
+    width: 100%;
+    padding: 10px;
+    height: 30px;
+  }
+  
+  div.elem-group.inlined input {
+    width: 95%;
+    display: inline-block;
+    font-size: 1em;
+    box-sizing: border-box;
+  }
+  
+  textarea {
+    height: 250px;
+  }
+  
+  
+  hr {
+    border: 2px line #ccc;
+  }
+  
+  button {
+    height: 40px;
+    border: 2px solid black;
+    background: rgb(0, 255, 0);
+    font-size: 1.25em;
+    font-family: 'Nanum Gothic';
+    border-radius: px;
+    cursor: pointer;
+    width: 50%;
+  }
+  
+  h1 {
+    text-align: center;
+    font-size: 3em;
+    background:cyan
+  }
+  body {
+    background-image: url('images.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+  }
+  
+</style>
+</head>
+<body>
+    <h1 style="color:blue;">Book a Call</h1> 
+    <p style="color:Red;">Book a call and our representative will call within one hour of selected time.</p>
+<hr></hr>
+    <div class="elem-group">
+    <label style="color:blue "for="name">Name:</label>
+    <br>
+    <input type="text" name="username" id="username" required>
+    </br>
+    </div>
+    <div class="elem-group">
+    <label label style="color:blue " for="phone">Phone:</label>
+    <br>
+    <input type="number" id="phone">
+</br>
+</div>
+<div>
+    <label style="color:blue "for="email">Email:</label>
+<br>
+    <input type="email" id="Email">
+</br>
+</div>
+<div  class="elem-group inlined">  
+    <label style="color:blue " for="time for call">Time for call:</label>
+
+    <input type="Date" id="time for call">
+</div>
+<div  class="elem-group inlined">  
+    <label style="color:blue "for="time" > Time: </label>
+
+    <input type="time" id="time">
+</div>  
+
+<button style="color:blue "type="submit" onclick = bookAppointment()>Book The Call</button>
+<!-- /<ul id="listOfitems"></ul> -->
+  <li id="listOfitems"></li>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script >
+
+function date() {
+  var currentDateTime = new Date();
+  var year = currentDateTime.getFullYear();
+  var month = (currentDateTime.getMonth() + 1);
+  var date = (currentDateTime.getDate() + 1);
+  
+  if(date < 10) {
+    date = '0' + date;
+  }
+  if(month < 10) {
+    month = '0' + month;
+  }
+  
+  var dateTomorrow = year + "-" + month + "-" + date;
+  var checkinElem = document.querySelector("#time for call");
+  
+  checkinElem.setAttribute("min", dateTomorrow);
+  
+  checkinElem.onchange = function () {
+      checkoutElem.setAttribute("min", this.value);
+  }
+}
+
+
+window.addEventListener("DOMContentLoaded",(event)=>{
+      axios.get("https://crudcrud.com/api/fc28784088494a37a9cf74e226d2f955/Appointmentdata")
+      .then((response)=>{
+        for(var i=0;i<response.data.length;i++)
+        {
+          showAppointmentList(response.data[i]);
+        }
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
+    })
+    
+
+    function deleteAppointment(obj){
+            axios.delete(`https://crudcrud.com/api/fc28784088494a37a9cf74e226d2f955/Appointmentdata/${obj._id}`)
+  .then(response => {
+    console.log(`Deleted post with ID ${obj._id}`);
+  })
+  .catch(error => {
+    console.error(error);
+  });
+    }
+
+    //Edit user Details
+    function editAppointment(obj){
+      axios.put(`https://crudcrud.com/api/fc28784088494a37a9cf74e226d2f955/Appointmentdata/${obj._id}`,obj)
+  .then(response => {
+    console.log(`edit post with ID ${obj._id}`);
+  })
+  .catch(error => {
+    console.error(error);
+  });
+    }
+
+//let objs=[];
+   function bookAppointment() {
+    
+  let obj={
+        id:document.getElementById('username').value,
+        contact:document.getElementById('phone').value,
+        mail:document.getElementById('Email').value
+
+    }
+    axios.post("https://crudcrud.com/api/fc28784088494a37a9cf74e226d2f955/Appointmentdata",obj)
+    .then((response)=>{
+      //show(response.data)
+      console.log(response)
+    })
+    .catch((error)=>{
+      console.log(error)
+     })
+
+    
+
+    //objs.push(obj);
+    // localStorage.setItem('myObjs',JSON.stringify(objs))
+    // clean the text filed
+    document.getElementById('username').value = ''
+    document.getElementById('phone').value = ''
+    document.getElementById('Email').value = ''
+    // show the newly added object
+    showAppointmentList(obj)
+    //localStorage.removeItem("myObjs");
+  }
+
+   function showAppointmentList(obj){
+
+
+      const emptyParentListItem = document.getElementById('listOfitems')
+    const newChildListItem = document.createElement('li')
+    newChildListItem.textContent = obj.id + '-' + obj.contact + '-' + obj.mail
+    const newChildButton = document.createElement('button')
+    newChildButton.style.color = 'red'
+    newChildButton.textContent =  'delete'
+    newChildButton.style.backgroundColor = 'white'
+    newChildButton.style.height='30px'
+    newChildButton.style.width='20%'
+    newChildButton.onclick = () =>{
+      //localStorage.removeItem(obj.mail)
+      deleteAppointment(obj)
+      emptyParentListItem.removeChild(newChildListItem) 
+    }
+    // newChildButton.onclick(deleteData(obj))
+    const neweditButton = document.createElement('button')
+    neweditButton.textContent =  'edit'
+    neweditButton.style.color = 'orange'
+    neweditButton.style.backgroundColor='white'
+    neweditButton.style.height='30px'
+    neweditButton.style.width='20%'
+
+    neweditButton.onclick = () =>{  
+      document.getElementById('username').value = obj.id
+      document.getElementById('phone').value = obj.contact
+      document.getElementById('Email').value = obj.mail
+      //localStorage.removeItem(obj.mail)
+      editAppointment(obj)
+      emptyParentListItem.removeChild(newChildListItem) 
+    }
+    newChildListItem.appendChild(newChildButton)
+    newChildListItem.appendChild(neweditButton)
+   emptyParentListItem.appendChild(newChildListItem)
+   }
+   
+  </script>
+</body>
+</html>
